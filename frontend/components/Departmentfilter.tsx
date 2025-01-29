@@ -122,7 +122,7 @@ const schemes = [
   }
 ]
 
-const departmentfilter = () => {
+const Departmentfilter = () => {
   const [selectedDepartment, setSelectedDepartment] = useState("All Departments")
   const [visibleSchemes, setVisibleSchemes] = useState(10)
 

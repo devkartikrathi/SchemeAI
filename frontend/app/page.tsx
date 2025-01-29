@@ -1,6 +1,6 @@
 import ImageSlider from "@/components/ImageSlider"
 import VerticalTabs from "@/components/VerticalTabs"
-import StateFilter from "@/components/departmentfilter"
+import DepartmentFilter from "@/components/Departmentfilter"
 import QuickLinks from "@/components/QuickLinks"
 import NewsUpdates from "@/components/NewsUpdates"
 
@@ -10,7 +10,7 @@ export default function Home() {
       <ImageSlider />
       <QuickLinks />
       <VerticalTabs />
-      <StateFilter />
+      <DepartmentFilter />
       <NewsUpdates />
     </div>
   )

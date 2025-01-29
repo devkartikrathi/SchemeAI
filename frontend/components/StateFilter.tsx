@@ -5,123 +5,133 @@ import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
 import { ChevronRight } from "lucide-react"
 
-const states = [
-  "All States",
-  "Andhra Pradesh",
-  "Gujarat",
-  "Karnataka",
-  "Maharashtra",
-  "Tamil Nadu",
-  "Uttar Pradesh",
-  "West Bengal",
-  "Rajasthan",
-  "Madhya Pradesh",
-  "Bihar",
-  "Telangana",
-  "Odisha",
-  "Kerala",
-  "Assam",
-]
-
 const schemes = [
   {
-    title: "Crop Insurance Scheme",
-    state: "Gujarat",
-    description: "Protect your crops against natural calamities.",
-    image: "/placeholder.svg?height=200&width=300",
+    "slNo": 1,
+    "department": "Food & Supplies Department",
+    "schemeName": "AAY Ration Card",
+    "annualIncomeCriteria": "Upto 0.50 lack"
   },
   {
-    title: "Skill Development Program",
-    state: "Maharashtra",
-    description: "Enhance your skills for better job opportunities.",
-    image: "/placeholder.svg?height=200&width=300",
+    "slNo": 2,
+    "department": "Haryana Parivahan department",
+    "schemeName": "Happy Card",
+    "annualIncomeCriteria": "Upt to 1.00 lack"
   },
   {
-    title: "Rural Housing Scheme",
-    state: "Karnataka",
-    description: "Affordable housing for rural families.",
-    image: "/placeholder.svg?height=200&width=300",
+    "slNo": 3,
+    "department": "Electricity Department",
+    "schemeName": "Electricity Subsidy",
+    "annualIncomeCriteria": "Upto 1.00 lack"
   },
   {
-    title: "Solar Power Subsidy",
-    state: "Tamil Nadu",
-    description: "Promote clean energy usage in households.",
-    image: "/placeholder.svg?height=200&width=300",
+    "slNo": 4,
+    "department": "Panchayat Department",
+    "schemeName": "Plot Allotment Scheme",
+    "annualIncomeCriteria": "Upto 1.00 lack"
   },
   {
-    title: "Women Entrepreneurship Program",
-    state: "Uttar Pradesh",
-    description: "Support for women-led businesses.",
-    image: "/placeholder.svg?height=200&width=300",
+    "slNo": 5,
+    "department": "Information, Public Relations and Languages Department",
+    "schemeName": "Mukhyamantri Tirth Yatra Yojana",
+    "annualIncomeCriteria": "Upto 1.80 lack"
   },
   {
-    title: "Digital Literacy Initiative",
-    state: "West Bengal",
-    description: "Bridging the digital divide in rural areas.",
-    image: "/placeholder.svg?height=200&width=300",
+    "slNo": 6,
+    "department": "Education Department",
+    "schemeName": "Chirau Yojna(Previous section 134 A)",
+    "annualIncomeCriteria": "Upto 1.80 lack"
   },
   {
-    title: "Organic Farming Support",
-    state: "Rajasthan",
-    description: "Promoting organic farming practices.",
-    image: "/placeholder.svg?height=200&width=300",
+    "slNo": 7,
+    "department": "Health Services Department",
+    "schemeName": "PMJAY Ayushman Bharat Health Card",
+    "annualIncomeCriteria": "Upto 1.80 lack"
   },
   {
-    title: "Clean Water Project",
-    state: "Madhya Pradesh",
-    description: "Ensuring access to clean drinking water.",
-    image: "/placeholder.svg?height=200&width=300",
+    "slNo": 8,
+    "department": "Food & Supplies Department",
+    "schemeName": "BPL Ration Card",
+    "annualIncomeCriteria": "Upto 1.80 lack"
   },
   {
-    title: "Rural Education Scholarship",
-    state: "Bihar",
-    description: "Supporting education in rural areas.",
-    image: "/placeholder.svg?height=200&width=300",
+    "slNo": 9,
+    "department": "Social Justice & Empowerment",
+    "schemeName": "National family benefits scheme for BPL families",
+    "annualIncomeCriteria": "Upto 1.80 Lack"
   },
   {
-    title: "Tech Startup Incubation",
-    state: "Telangana",
-    description: "Fostering innovation and entrepreneurship.",
-    image: "/placeholder.svg?height=200&width=300",
+    "slNo": 10,
+    "department": "Welfare of SCs & BCs",
+    "schemeName": "Dr B.R Ambedkar Awas Navinikaran Yojna",
+    "annualIncomeCriteria": "Upto 1.80 lack"
   },
   {
-    title: "Coastal Area Development",
-    state: "Odisha",
-    description: "Sustainable development of coastal regions.",
-    image: "/placeholder.svg?height=200&width=300",
+    "slNo": 11,
+    "department": "Social Justice & Empowerment",
+    "schemeName": "Financial Assistance to Destitute Child",
+    "annualIncomeCriteria": "Upto 3.00 lack"
   },
   {
-    title: "Ayurveda Research Grant",
-    state: "Kerala",
-    description: "Promoting research in traditional medicine.",
-    image: "/placeholder.svg?height=200&width=300",
+    "slNo": 12,
+    "department": "Social Justice & Empowerment",
+    "schemeName": "Ladli Yojna",
+    "annualIncomeCriteria": "Upto 3.00 lack"
   },
   {
-    title: "Tea Plantation Workers Welfare",
-    state: "Assam",
-    description: "Improving lives of tea plantation workers.",
-    image: "/placeholder.svg?height=200&width=300",
+    "slNo": 13,
+    "department": "Social Justice & Empowerment",
+    "schemeName": "Old Age Pension Scheme",
+    "annualIncomeCriteria": "Upto 3.00 lack"
   },
   {
-    title: "Handloom Weavers Support",
-    state: "Andhra Pradesh",
-    description: "Preserving traditional handloom industry.",
-    image: "/placeholder.svg?height=200&width=300",
+    "slNo": 14,
+    "department": "Social Justice & Empowerment",
+    "schemeName": "Widow & Destitute Women Pension",
+    "annualIncomeCriteria": "Upto 3.00 lack"
   },
   {
-    title: "Tribal Development Project",
-    state: "Gujarat",
-    description: "Empowering tribal communities.",
-    image: "/placeholder.svg?height=200&width=300",
+    "slNo": 15,
+    "department": "Social Justice & Empowerment",
+    "schemeName": "Bona Bhata",
+    "annualIncomeCriteria": "Upto 3.00 lack"
   },
+  {
+    "slNo": 16,
+    "department": "Social Justice & Empowerment",
+    "schemeName": "Financial Assistance to Widower and Unmarried Persons",
+    "annualIncomeCriteria": "Upto 3.00 lack"
+  },
+  {
+    "slNo": 17,
+    "department": "Social Justice & Empowerment",
+    "schemeName": "Disability Pension",
+    "annualIncomeCriteria": "Upto 3.00 lack"
+  },
+  {
+    "slNo": 18,
+    "department": "Welfare of SCs & BCs",
+    "schemeName": "Mukhyamantri Vivah Shagun Yojana",
+    "annualIncomeCriteria": "Upto 3.00 lack"
+  },
+  {
+    "slNo": 19,
+    "department": "Haryana Parivar Suraksha Nyas",
+    "schemeName": "Deen Dayal Upadyay Antodya Parivar Suraksha Yojna",
+    "annualIncomeCriteria": "Upto 5 lack"
+  }
 ]
 
 const StateFilter = () => {
-  const [selectedState, setSelectedState] = useState("All States")
+  const [selectedDepartment, setSelectedDepartment] = useState("All Departments")
   const [visibleSchemes, setVisibleSchemes] = useState(10)
 
-  const filteredSchemes =
-    selectedState === "All States" ? schemes : schemes.filter((scheme) => scheme.state === selectedState)
+  // Get unique departments from schemes
+  const departments = ['All Departments', ...new Set(schemes.map(scheme => scheme.department))]
+
+  const filteredSchemes = selectedDepartment === "All Departments"
+    ? schemes
+    : schemes.filter(scheme => scheme.department === selectedDepartment)
 
   const handleLoadMore = () => {
     setVisibleSchemes((prev) => Math.min(prev + 5, filteredSchemes.length))
@@ -129,27 +139,29 @@ const StateFilter = () => {
 
   return (
     <div className="container mx-auto px-4 py-16 bg-gray-100">
-      <h2 className="text-4xl font-display font-bold mb-8 text-center text-primary">State-Wise Schemes</h2>
+      <h2 className="text-4xl font-display font-bold mb-8 text-center text-primary">Haryana Government Schemes</h2>
+
       <div className="mb-8">
-        <label htmlFor="state-filter" className="block text-lg font-semibold text-primary mb-2">
-          Select State:
+        <label htmlFor="department-filter" className="block text-lg font-semibold text-primary mb-2">
+          Filter by Department:
         </label>
         <select
-          id="state-filter"
+          id="department-filter"
           className="block w-full px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary text-lg"
-          value={selectedState}
+          value={selectedDepartment}
           onChange={(e) => {
-            setSelectedState(e.target.value)
+            setSelectedDepartment(e.target.value)
             setVisibleSchemes(10)
           }}
         >
-          {states.map((state) => (
-            <option key={state} value={state}>
-              {state}
+          {departments.map((department) => (
+            <option key={department} value={department}>
+              {department}
             </option>
           ))}
         </select>
       </div>
+
       <motion.div
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         initial="hidden"
@@ -165,9 +177,9 @@ const StateFilter = () => {
         }}
       >
         <AnimatePresence>
-          {filteredSchemes.slice(0, visibleSchemes).map((scheme, index) => (
+          {filteredSchemes.slice(0, visibleSchemes).map((scheme) => (
             <motion.div
-              key={index}
+              key={scheme.slNo}
               className="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
               variants={{
                 hidden: { opacity: 0, y: 20 },
@@ -177,24 +189,29 @@ const StateFilter = () => {
               whileHover={{ scale: 1.05 }}
             >
               <Image
-                src={scheme.image || "/placeholder.svg"}
-                alt={scheme.title}
+                src="/placeholder.svg"
+                alt={scheme.schemeName}
                 width={300}
                 height={200}
-                className="w-full h-48 object-cover"
+                className="w-full h-48 object-cover bg-gray-200"
               />
               <div className="p-6">
-                <h3 className="text-2xl font-semibold mb-2 text-primary">{scheme.title}</h3>
-                <p className="text-gray-600 mb-4">{scheme.description}</p>
-                <p className="text-sm text-secondary font-semibold mb-4">State: {scheme.state}</p>
-                <a href="#" className="inline-flex items-center text-secondary hover:text-primary transition-colors">
-                  Learn more <ChevronRight className="ml-1 w-4 h-4" />
-                </a>
+                <h3 className="text-2xl font-semibold mb-2 text-primary">{scheme.schemeName}</h3>
+                <p className="text-sm text-secondary font-semibold mb-2">
+                  Department: {scheme.department}
+                </p>
+                <p className="text-gray-600 mb-4">
+                  Annual Income Criteria: {scheme.annualIncomeCriteria}
+                </p>
+                <button className="inline-flex items-center text-secondary hover:text-primary transition-colors">
+                  View Details <ChevronRight className="ml-1 w-4 h-4" />
+                </button>
               </div>
             </motion.div>
           ))}
         </AnimatePresence>
       </motion.div>
+
       {visibleSchemes < filteredSchemes.length && (
         <div className="text-center mt-8">
           <motion.button
@@ -203,7 +220,7 @@ const StateFilter = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            Load More
+            Load More Schemes
           </motion.button>
         </div>
       )}
@@ -212,4 +229,3 @@ const StateFilter = () => {
 }
 
 export default StateFilter
-

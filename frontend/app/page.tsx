@@ -1,4 +1,3 @@
-"use client"
 import ImageSlider from "@/components/ImageSlider"
 import VerticalTabs from "@/components/VerticalTabs"
 import StateFilter from "@/components/StateFilter"

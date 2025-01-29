@@ -1,6 +1,6 @@
 import ImageSlider from "@/components/ImageSlider"
 import VerticalTabs from "@/components/VerticalTabs"
-import StateFilter from "@/components/StateFilter"
+import StateFilter from "@/components/departmentfilter"
 import QuickLinks from "@/components/QuickLinks"
 import NewsUpdates from "@/components/NewsUpdates"
 

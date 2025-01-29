@@ -122,7 +122,7 @@ const schemes = [
   }
 ]
 
-const StateFilter = () => {
+const departmentfilter = () => {
   const [selectedDepartment, setSelectedDepartment] = useState("All Departments")
   const [visibleSchemes, setVisibleSchemes] = useState(10)
 
@@ -228,4 +228,4 @@ const StateFilter = () => {
   )
 }
 
-export default StateFilter
+export default departmentfilter

@@ -228,4 +228,4 @@ const Departmentfilter = () => {
   )
 }
 
-export default departmentfilter
+export default Departmentfilter

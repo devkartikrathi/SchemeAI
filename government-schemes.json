@@ -1,0 +1,118 @@
+{
+  "schemes": [
+    {
+      "slNo": 1,
+      "department": "Food & Supplies Department",
+      "schemeName": "AAY Ration Card",
+      "annualIncomeCriteria": "Upto 0.50 lack"
+    },
+    {
+      "slNo": 2,
+      "department": "Haryana Parivahan department",
+      "schemeName": "Happy Card",
+      "annualIncomeCriteria": "Upt to 1.00 lack"
+    },
+    {
+      "slNo": 3,
+      "department": "Electricity Department",
+      "schemeName": "Electricity Subsidy",
+      "annualIncomeCriteria": "Upto 1.00 lack"
+    },
+    {
+      "slNo": 4,
+      "department": "Panchayat Department",
+      "schemeName": "Plot Allotment Scheme",
+      "annualIncomeCriteria": "Upto 1.00 lack"
+    },
+    {
+      "slNo": 5,
+      "department": "Information, Public Relations and Languages Department",
+      "schemeName": "Mukhyamantri Tirth Yatra Yojana",
+      "annualIncomeCriteria": "Upto 1.80 lack"
+    },
+    {
+      "slNo": 6,
+      "department": "Education Department",
+      "schemeName": "Chirau Yojna(Previous section 134 A)",
+      "annualIncomeCriteria": "Upto 1.80 lack"
+    },
+    {
+      "slNo": 7,
+      "department": "Health Services Department",
+      "schemeName": "PMJAY Ayushman Bharat Health Card",
+      "annualIncomeCriteria": "Upto 1.80 lack"
+    },
+    {
+      "slNo": 8,
+      "department": "Food & Supplies Department",
+      "schemeName": "BPL Ration Card",
+      "annualIncomeCriteria": "Upto 1.80 lack"
+    },
+    {
+      "slNo": 9,
+      "department": "Social Justice & Empowerment",
+      "schemeName": "National family benefits scheme for BPL families",
+      "annualIncomeCriteria": "Upto 1.80 Lack"
+    },
+    {
+      "slNo": 10,
+      "department": "Welfare of SCs & BCs",
+      "schemeName": "Dr B.R Ambedkar Awas Navinikaran Yojna",
+      "annualIncomeCriteria": "Upto 1.80 lack"
+    },
+    {
+      "slNo": 11,
+      "department": "Social Justice & Empowerment",
+      "schemeName": "Financial Assistance to Destitute Child",
+      "annualIncomeCriteria": "Upto 3.00 lack"
+    },
+    {
+      "slNo": 12,
+      "department": "Social Justice & Empowerment",
+      "schemeName": "Ladli Yojna",
+      "annualIncomeCriteria": "Upto 3.00 lack"
+    },
+    {
+      "slNo": 13,
+      "department": "Social Justice & Empowerment",
+      "schemeName": "Old Age Pension Scheme",
+      "annualIncomeCriteria": "Upto 3.00 lack"
+    },
+    {
+      "slNo": 14,
+      "department": "Social Justice & Empowerment",
+      "schemeName": "Widow & Destitute Women Pension",
+      "annualIncomeCriteria": "Upto 3.00 lack"
+    },
+    {
+      "slNo": 15,
+      "department": "Social Justice & Empowerment",
+      "schemeName": "Bona Bhata",
+      "annualIncomeCriteria": "Upto 3.00 lack"
+    },
+    {
+      "slNo": 16,
+      "department": "Social Justice & Empowerment",
+      "schemeName": "Financial Assistance to Widower and Unmarried Persons",
+      "annualIncomeCriteria": "Upto 3.00 lack"
+    },
+    {
+      "slNo": 17,
+      "department": "Social Justice & Empowerment",
+      "schemeName": "Disability Pension",
+      "annualIncomeCriteria": "Upto 3.00 lack"
+    },
+    {
+      "slNo": 18,
+      "department": "Welfare of SCs & BCs",
+      "schemeName": "Mukhyamantri Vivah Shagun Yojana",
+      "annualIncomeCriteria": "Upto 3.00 lack"
+    },
+    {
+      "slNo": 19,
+      "department": "Haryana Parivar Suraksha Nyas",
+      "schemeName": "Deen Dayal Upadyay Antodya Parivar Suraksha Yojna",
+      "annualIncomeCriteria": "Upto 5 lack"
+    }
+  ]
+}

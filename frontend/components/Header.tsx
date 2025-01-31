@@ -78,7 +78,7 @@ const Header = () => {
   if (!isMounted) return null; // Prevent hydration mismatch
 
   return (
-    <header className="bg-primary text-white shadow-md">
+    <header className="bg-gradient-to-r from-blue-600 to-teal-600 text-white shadow-md">
       <nav className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           <Link href="/" className="text-2xl font-display font-bold">
@@ -97,7 +97,6 @@ const Header = () => {
                   href={tab.href}
                   className="hover:text-accent transition-colors font-medium"
                   onMouseEnter={() => setActiveDropdown(tab.name)}
-                  onMouseLeave={() => setActiveDropdown(null)}
                 >
                   <span className="flex items-center">
                     {tab.name}
@@ -112,6 +111,7 @@ const Header = () => {
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.2 }}
                       className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10"
+                      onMouseLeave={() => setActiveDropdown(null)}
                     >
                       {tab.dropdown.map((item) => (
                         <li key={item.name}>

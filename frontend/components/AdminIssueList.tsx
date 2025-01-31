@@ -39,7 +39,6 @@ const issues = [
     date: "2023-05-05",
     status: "Resolved",
   },
-  // Add more dummy issues here
 ]
 
 const AdminIssueList = () => {

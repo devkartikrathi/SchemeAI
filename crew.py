@@ -4,11 +4,13 @@ from pymongo import MongoClient
 import json
 from bson import ObjectId
 from datetime import datetime
+import os
+from dotenv import load_dotenv
 
-# MongoDB Connection
-MONGO_URI = "mongodb+srv://test:testPassword@cluster0.5rend.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+load_dotenv()
+
 DATABASE_NAME = "government_portal"
-client = MongoClient(MONGO_URI)
+client = MongoClient(os.getenv('MONGO_URI'))
 db = client[DATABASE_NAME]
 users_collection = db["users"]
 complaints_collection = db["complaints"]
@@ -72,8 +74,20 @@ class SchemeAICrew:
             "user_data": b,
             "schemes": t
         })
-        print(response)
+        if response.json_dict:
+            response = json.dumps(response.json_dict)
+        else: 
+            response = response.raw
+            response = self.remove_json_delimiters(response)
         return response
+
+    def remove_json_delimiters(self, response_text):
+
+        start_index = response_text.find("```json") + len("```json") 
+
+        end_index = response_text.find("```", start_index)
+
+        return response_text[start_index:end_index]
 
     def load_schemes(self):
         """Load government schemes from a JSON file."""

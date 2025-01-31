@@ -1,4 +1,4 @@
 eligibility_check_task:
   description: "Evaluate user data : {user_data} and determine eligibility for government schemes : {schemes}."
-  expected_output: "JSON containing eligible schemes {schemes}, eligibility status, and a message {query}. Formatted as json without '```'"
+  expected_output: "JSON containing eligible schemes {schemes}, eligibility status, and a message {query}. Formatted as json without '```json```' format that can be sent directly to the frontend."
   agent: scheme_advisor

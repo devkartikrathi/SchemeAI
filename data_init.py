@@ -1,25 +1,56 @@
-
-from pymongo.mongo_client import MongoClient
-from pymongo.server_api import ServerApi
-from bson.objectid import ObjectId
 import json
+from pymongo import MongoClient
+import os
+from dotenv import load_dotenv
 
-uri = "mongodb+srv://test:testPassword@cluster0.5rend.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+# Load environment variables
+load_dotenv()
 
-# Create a new client and connect to the server
-client = MongoClient(uri, server_api=ServerApi('1'))
-
-MONGO_URI = "mongodb+srv://test:testPassword@cluster0.5rend.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0" 
+# Configuration
+SCHEMES_FILE = "government-schemes.json"
+MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
 DATABASE_NAME = "government_portal"
-client = MongoClient(MONGO_URI)
-db = client[DATABASE_NAME]
-users_collection = db["users"]
-complaints_collection = db["complaints"]
+COLLECTION_NAME = "schemes"
 
-user = users_collection.find_one({"_id": ObjectId("6798fcac6dc00c08c0710beb")})
+def load_schemes_to_mongodb():
+    """Load schemes from JSON file to MongoDB collection"""
+    
+    try:
+        # Read JSON file
+        with open(SCHEMES_FILE, "r") as file:
+            data = json.load(file)
+            schemes = data.get("schemes", [])
+        
+        if not schemes:
+            print("No schemes found in the JSON file")
+            return
 
-response = "\"\\n{\\n  \\\"eligibleSchemes\\\": [\\n    {\\n      \\\"slNo\\\": 5,\\n      \\\"department\\\": \\\"Information, Public Relations and Languages Department\\\",\\n      \\\"schemeName\\\": \\\"Mukhyamantri Tirth Yatra Yojana\\\",\\n      \\\"annualIncomeCriteria\\\": \\\"Upto 1.80 lack\\\",\\n      \\\"eligibilityStatus\\\": \\\"Eligible\\\"\\n    },\\n    {\\n      \\\"slNo\\\": 6,\\n      \\\"department\\\": \\\"Education Department\\\",\\n      \\\"schemeName\\\": \\\"Chirau Yojna(Previous section 134 A)\\\",\\n      \\\"annualIncomeCriteria\\\": \\\"Upto 1.80 lack\\\",\\n      \\\"eligibilityStatus\\\": \\\"Eligible\\\"\\n    },\\n    {\\n      \\\"slNo\\\": 7,\\n      \\\"department\\\": \\\"Health Services Department\\\",\\n      \\\"schemeName\\\": \\\"PMJAY Ayushman Bharat Health Card\\\",\\n      \\\"annualIncomeCriteria\\\": \\\"Upto 1.80 lack\\\",\\n      \\\"eligibilityStatus\\\": \\\"Eligible\\\"\\n    },\\n    {\\n      \\\"slNo\\\": 8,\\n      \\\"department\\\": \\\"Food & Supplies Department\\\",\\n      \\\"schemeName\\\": \\\"BPL Ration Card\\\",\\n      \\\"annualIncomeCriteria\\\": \\\"Upto 1.80 lack\\\",\\n      \\\"eligibilityStatus\\\": \\\"Eligible\\\"\\n    },\\n    {\\n      \\\"slNo\\\": 9,\\n      \\\"department\\\": \\\"Social Justice & Empowerment\\\",\\n      \\\"schemeName\\\": \\\"National family benefits scheme for BPL families\\\",\\n      \\\"annualIncomeCriteria\\\": \\\"Upto 1.80 Lack\\\",\\n      \\\"eligibilityStatus\\\": \\\"Eligible\\\"\\n    },\\n    {\\n      \\\"slNo\\\": 10,\\n      \\\"department\\\": \\\"Welfare of SCs & BCs\\\",\\n      \\\"schemeName\\\": \\\"Dr B.R Ambedkar Awas Navinikaran Yojna\\\",\\n      \\\"annualIncomeCriteria\\\": \\\"Upto 1.80 lack\\\",\\n      \\\"eligibilityStatus\\\": \\\"Eligible\\\"\\n    },\\n    {\\n      \\\"slNo\\\": 11,\\n      \\\"department\\\": \\\"Social Justice & Empowerment\\\",\\n      \\\"schemeName\\\": \\\"Financial Assistance to Destitute Child\\\",\\n      \\\"annualIncomeCriteria\\\": \\\"Upto 3.00 lack\\\",\\n      \\\"eligibilityStatus\\\": \\\"Eligible\\\"\\n    },\\n    {\\n      \\\"slNo\\\": 12,\\n      \\\"department\\\": \\\"Social Justice & Empowerment\\\",\\n      \\\"schemeName\\\": \\\"Ladli Yojna\\\",\\n      \\\"annualIncomeCriteria\\\": \\\"Upto 3.00 lack\\\",\\n      \\\"eligibilityStatus\\\": \\\"Eligible\\\"\\n    },\\n    {\\n      \\\"slNo\\\": 13,\\n      \\\"department\\\": \\\"Social Justice & Empowerment\\\",\\n      \\\"schemeName\\\": \\\"Old Age Pension Scheme\\\",\\n      \\\"annualIncomeCriteria\\\": \\\"Upto 3.00 lack\\\",\\n      \\\"eligibilityStatus\\\": \\\"Eligible\\\"\\n    },\\n    {\\n      \\\"slNo\\\": 14,\\n      \\\"department\\\": \\\"Social Justice & Empowerment\\\",\\n      \\\"schemeName\\\": \\\"Widow & Destitute Women Pension\\\",\\n      \\\"annualIncomeCriteria\\\": \\\"Upto 3.00 lack\\\",\\n      \\\"eligibilityStatus\\\": \\\"Eligible\\\"\\n    },\\n    {\\n      \\\"slNo\\\": 15,\\n      \\\"department\\\": \\\"Social Justice & Empowerment\\\",\\n      \\\"schemeName\\\": \\\"Bona Bhata\\\",\\n      \\\"annualIncomeCriteria\\\": \\\"Upto 3.00 lack\\\",\\n      \\\"eligibilityStatus\\\": \\\"Eligible\\\"\\n    },\\n    {\\n      \\\"slNo\\\": 16,\\n      \\\"department\\\": \\\"Social Justice & Empowerment\\\",\\n      \\\"schemeName\\\": \\\"Financial Assistance to Widower and Unmarried Persons\\\",\\n      \\\"annualIncomeCriteria\\\": \\\"Upto 3.00 lack\\\",\\n      \\\"eligibilityStatus\\\": \\\"Eligible\\\"\\n    },\\n    {\\n      \\\"slNo\\\": 17,\\n      \\\"department\\\": \\\"Social Justice & Empowerment\\\",\\n      \\\"schemeName\\\": \\\"Disability Pension\\\",\\n      \\\"annualIncomeCriteria\\\": \\\"Upto 3.00 lack\\\",\\n      \\\"eligibilityStatus\\\": \\\"Eligible\\\"\\n    },\\n    {\\n      \\\"slNo\\\": 18,\\n      \\\"department\\\": \\\"Welfare of SCs & BCs\\\",\\n      \\\"schemeName\\\": \\\"Mukhyamantri Vivah Shagun Yojana\\\",\\n      \\\"annualIncomeCriteria\\\": \\\"Upto 3.00 lack\\\",\\n      \\\"eligibilityStatus\\\": \\\"Eligible\\\"\\n    },\\n    {\\n      \\\"slNo\\\": 19,\\n      \\\"department\\\": \\\"Haryana Parivar Suraksha Nyas\\\",\\n      \\\"schemeName\\\": \\\"Deen Dayal Upadyay Antodya Parivar Suraksha Yojna\\\",\\n      \\\"annualIncomeCriteria\\\": \\\"Upto 5 lack\\\",\\n      \\\"eligibilityStatus\\\": \\\"Eligible\\\"\\n    }\\n  ],\\n  \\\"message\\\": \\\"What schemes am I eligible for?\\\"\\n}\\n\""
+        # Connect to MongoDB
+        client = MongoClient(MONGO_URI)
+        db = client[DATABASE_NAME]
+        collection = db[COLLECTION_NAME]
 
-if isinstance(response, str):
-  response_dict = json.loads(response)
-  print(response)
+        # Check if collection is empty
+        if collection.count_documents({}) == 0:
+            # Insert all schemes
+            result = collection.insert_many(schemes)
+            print(f"Successfully inserted {len(result.inserted_ids)} schemes")
+        else:
+            print("Collection already contains data. No insertion performed.")
+
+        # Create index on scheme name
+        collection.create_index("schemeName", unique=True)
+        print("Created index on 'schemeName'")
+
+    except FileNotFoundError:
+        print(f"Error: JSON file '{SCHEMES_FILE}' not found")
+    except json.JSONDecodeError:
+        print(f"Error: Invalid JSON format in '{SCHEMES_FILE}'")
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
+    finally:
+        if 'client' in locals():
+            client.close()
+
+if __name__ == "__main__":
+    load_schemes_to_mongodb()

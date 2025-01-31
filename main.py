@@ -17,7 +17,6 @@ db = client[DATABASE_NAME]
 users_collection = db["users"]
 complaints_collection = db["complaints"]
 
-# Pydantic Models for Input Validation
 class QueryRequest(BaseModel):
     user_id: str
     user_query: str

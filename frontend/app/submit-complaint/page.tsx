@@ -72,7 +72,7 @@ export default function SubmitComplaint() {
         setIsSubmitting(true);
 
         try {
-            const response = await fetch("https://schemeai.onrender.com/raise-complaint/", {
+            const response = await fetch("/api/raise-complaint/", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

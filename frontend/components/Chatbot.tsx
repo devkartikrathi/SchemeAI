@@ -83,7 +83,7 @@ const Chatbot = () => {
     setIsThinking(true);
 
     try {
-      const response = await fetch(process.env.NEXT_PUBLIC_CHAT_API || "https://schemeai.onrender.com/start-chat", {
+      const response = await fetch("/api/start-chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

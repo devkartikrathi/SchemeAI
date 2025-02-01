@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -83,9 +84,6 @@ body {
   --chatbot-bot-message: 233, 236, 239; /* #E9ECEF */
   --chatbot-bot-message-text: 51, 51, 51; /* #333333 */
 }
-
-/* Font definitions */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap");
 
 @layer base {
   body {

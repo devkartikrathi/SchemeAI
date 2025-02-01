@@ -13,9 +13,10 @@ import jwt
 import json
 import re
 import math
+import uvicorn
 from typing import List, Optional
 
-# Configuration
+# Configuration 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
 JWT_SECRET = os.getenv("JWT_SECRET", "admin_secret_123")
@@ -34,6 +35,15 @@ schemes_collection = db["schemes"]
 
 app = FastAPI()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="admin/login")
+
+from fastapi.middleware.cors import CORSMiddleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://scheme-ai.vercel.app/"], 
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # --------------------------- UTILS ---------------------------
 
@@ -210,6 +220,10 @@ class AIService:
 
 # --------------------------- CORE ENDPOINTS ---------------------------
 
+@app.get("/")
+def home():
+    return {"RUNNING!"}
+
 @app.post("/start-chat/")
 async def chat_interaction(query: UserQuery):
     user = users_collection.find_one({"_id": ObjectId(query.unique_id) if ObjectId.is_valid(query.unique_id) else None})
@@ -287,3 +301,6 @@ def verify_admin(token: str = Depends(oauth2_scheme)):
         raise HTTPException(status_code=401, detail="Token expired")
     except jwt.InvalidTokenError:
         raise HTTPException(status_code=401, detail="Invalid token")
+    
+if __name__ == '__main__':
+    uvicorn.run(app, port=8080, host='0.0.0.0')

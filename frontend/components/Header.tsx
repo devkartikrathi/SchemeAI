@@ -16,26 +16,28 @@ const Header = () => {
 
   const tabs = [
     { name: "Home", href: "/" },
-    {
-      name: "Schemes",
-      href: "#",
-      dropdown: [
-        { name: "Farmers", href: "/schemes/farmers" },
-        { name: "Youth", href: "/schemes/youth" },
-        { name: "Senior Citizens", href: "/schemes/senior-citizens" },
-      ],
-    },
+    // {
+    //   name: "Schemes",
+    //   href: "#",
+    //   dropdown: [
+    //     { name: "Farmers", href: "/schemes/farmers" },
+    //     { name: "Youth", href: "/schemes/youth" },
+    //     { name: "Senior Citizens", href: "/schemes/senior-citizens" },
+    //   ],
+    // },
     {
       name: "Services",
       href: "#",
       dropdown: [
-        { name: "Apply for Scheme", href: "/services/apply" },
-        { name: "Check Status", href: "/services/status" },
-        { name: "Download Forms", href: "/services/forms" },
+        // { name: "Apply for Scheme", href: "/services/apply" },
+        // { name: "Check Status", href: "/services/status" },
+        // { name: "Download Forms", href: "/services/forms" },
+        { name: "Raise Complaint", href: "/submit-complaint" },
       ],
     },
-    { name: "About", href: "/about" },
-    { name: "Contact", href: "/contact" },
+    { name: "Admin", href: "/admin" },
+    // { name: "About", href: "/about" },
+    // { name: "Contact", href: "/contact" },
   ];
 
   const toggleMenu = () => {

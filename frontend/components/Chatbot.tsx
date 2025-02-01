@@ -14,7 +14,7 @@ const WELCOME_MESSAGES = [
   "To provide you with personalized assistance, could you please share your UniqueId number? If you prefer not to, just let me know.",
 ];
 
-const UniqueId_REQUEST_LINK = "https://resident.uidai.gov.in/en/web/resident/get-UniqueId";
+const UniqueId_REQUEST_LINK = "https://scheme-ai.vercel.app/submit-complaint";
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);

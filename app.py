@@ -13,6 +13,7 @@ import jwt
 import json
 import re
 import math
+import uvicorn
 from typing import List, Optional
 
 # Configuration
@@ -287,3 +288,6 @@ def verify_admin(token: str = Depends(oauth2_scheme)):
         raise HTTPException(status_code=401, detail="Token expired")
     except jwt.InvalidTokenError:
         raise HTTPException(status_code=401, detail="Invalid token")
+    
+if __name__ == '__main__':
+    uvicorn.run(app, port=8080, host='0.0.0.0')

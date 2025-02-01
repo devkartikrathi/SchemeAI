@@ -16,7 +16,7 @@ import math
 import uvicorn
 from typing import List, Optional
 
-# Configuration
+# Configuration 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
 JWT_SECRET = os.getenv("JWT_SECRET", "admin_secret_123")

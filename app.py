@@ -36,6 +36,15 @@ schemes_collection = db["schemes"]
 app = FastAPI()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="admin/login")
 
+from fastapi.middleware.cors import CORSMiddleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://scheme-ai.vercel.app/"], 
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # --------------------------- UTILS ---------------------------
 
 class PyObjectId(str):
@@ -210,6 +219,10 @@ class AIService:
         return data
 
 # --------------------------- CORE ENDPOINTS ---------------------------
+
+@app.get("/")
+def home():
+    return {"RUNNING!"}
 
 @app.post("/start-chat/")
 async def chat_interaction(query: UserQuery):

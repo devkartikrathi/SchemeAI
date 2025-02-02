@@ -1,17 +1,17 @@
 import ImageSlider from "@/components/ImageSlider"
-import VerticalTabs from "@/components/VerticalTabs"
+// import VerticalTabs from "@/components/VerticalTabs"
 import DepartmentFilter from "@/components/Departmentfilter"
-import QuickLinks from "@/components/QuickLinks"
-import NewsUpdates from "@/components/NewsUpdates"
+// import QuickLinks from "@/components/QuickLinks"
+// import NewsUpdates from "@/components/NewsUpdates"
 
 export default function Home() {
   return (
     <div className="bg-gray-100">
       <ImageSlider />
-      <QuickLinks />
-      <VerticalTabs />
+      {/* <QuickLinks /> */}
+      {/* <VerticalTabs /> */}
       <DepartmentFilter />
-      <NewsUpdates />
+      {/* <NewsUpdates /> */}
     </div>
   )
 }

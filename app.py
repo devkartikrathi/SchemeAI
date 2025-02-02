@@ -1,3 +1,4 @@
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from pydantic import BaseModel, Field, ConfigDict
@@ -16,7 +17,7 @@ import math
 import uvicorn
 from typing import List, Optional
 
-# Configuration 
+# Configuration
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
 JWT_SECRET = os.getenv("JWT_SECRET", "admin_secret_123")
@@ -36,16 +37,16 @@ schemes_collection = db["schemes"]
 app = FastAPI()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="admin/login")
 
-from fastapi.middleware.cors import CORSMiddleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://scheme-ai.vercel.app/"], 
+    allow_origins=["https://scheme-ai.vercel.app"],
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 
 # --------------------------- UTILS ---------------------------
+
 
 class PyObjectId(str):
     """Custom Pydantic class to handle MongoDB's ObjectId in Pydantic v2."""
@@ -76,43 +77,49 @@ class PyObjectId(str):
 
 # --------------------------- MODELS ---------------------------
 
+
 class UserQuery(BaseModel):
     unique_id: str
     message: str
+
 
 class ComplaintRequest(BaseModel):
     mobile: str
     address: str
     message: str
 
+
 class UserResponse(BaseModel):
     unique_id: str
     message: str
     timestamp: datetime
 
+
 class AdminLogin(BaseModel):
     username: str
     password: str
-    
+
+
 class User(BaseModel):
-    id: Optional[str] = Field(default=None, alias="_id")  
+    id: Optional[str] = Field(default=None, alias="_id")
     DOB: Optional[str] = None
     DOBVerified: Optional[str] = None
     DOBVerifiedSource: Optional[str] = None
     scheme: Optional[str] = None
     pension_ID: Optional[int] = None
     AGE: Optional[int] = None
-    Contact_Department: Optional[str] = Field(None, alias="Contact Department") 
+    Contact_Department: Optional[str] = Field(None, alias="Contact Department")
     UniqueID: Optional[str] = None
-    income_greater_than: Optional[float] = None  
-    income_less_than: Optional[float] = None 
+    income_greater_than: Optional[float] = None
+    income_less_than: Optional[float] = None
 
     class Config:
         from_attributes = True
-        populate_by_name = True  
+        populate_by_name = True
         json_encoders = {datetime: lambda dt: dt.isoformat()}
 
 # --------------------------- AI SERVICE ---------------------------
+
 
 class AIService:
     def __init__(self):
@@ -149,11 +156,13 @@ class AIService:
             with open("government-schemes.json", "r") as file:
                 return json.load(file).get("schemes", [])
         except Exception as e:
-            raise HTTPException(status_code=500, detail=f"Error loading schemes: {str(e)}")
+            raise HTTPException(
+                status_code=500, detail=f"Error loading schemes: {str(e)}")
 
     def determine_query_type(self, message):
         """Determine if the query is general or user-specific."""
-        general_keywords = ["all schemes", "list of schemes", "government programs", "available schemes"]
+        general_keywords = ["all schemes", "list of schemes",
+                            "government programs", "available schemes"]
         return any(keyword in message.lower() for keyword in general_keywords)
 
     def generate_response(self, user_data: dict, chat_history: list, message: str):
@@ -165,15 +174,19 @@ class AIService:
                 llm_prompt = [
                     self.system_prompt,
                     "User is asking a general question about all available government schemes.",
-                    f"Available Schemes: {json.dumps(self.convert_objectid(schemes_data), indent=2)}",
+                    f"Available Schemes: {json.dumps(
+                        self.convert_objectid(schemes_data), indent=2)}",
                     f"User's latest query: {message}"
                 ]
             else:
                 llm_prompt = [
                     self.system_prompt,
-                    f"User Profile: {json.dumps(self.convert_objectid(user_data), indent=2)}",
-                    f"Available Schemes: {json.dumps(self.convert_objectid(schemes_data), indent=2)}",
-                    f"Conversation History: {json.dumps(self.convert_objectid(chat_history), indent=2)}",
+                    f"User Profile: {json.dumps(
+                        self.convert_objectid(user_data), indent=2)}",
+                    f"Available Schemes: {json.dumps(
+                        self.convert_objectid(schemes_data), indent=2)}",
+                    f"Conversation History: {json.dumps(
+                        self.convert_objectid(chat_history), indent=2)}",
                     f"User's latest query: {message}"
                 ]
 
@@ -196,11 +209,14 @@ class AIService:
             return json.loads(cleaned_json)
 
         except json.JSONDecodeError as e:
-            raise HTTPException(status_code=500, detail=f"AI Response Error: Invalid JSON - {str(e)}")
+            raise HTTPException(
+                status_code=500, detail=f"AI Response Error: Invalid JSON - {str(e)}")
         except ValueError as e:
-            raise HTTPException(status_code=500, detail=f"AI Service Error: {str(e)}")
+            raise HTTPException(
+                status_code=500, detail=f"AI Service Error: {str(e)}")
         except Exception as e:
-            raise HTTPException(status_code=500, detail=f"Gemini API Failure: {str(e)}")
+            raise HTTPException(
+                status_code=500, detail=f"Gemini API Failure: {str(e)}")
 
     def convert_objectid(self, data):
         """Recursively convert ObjectId, datetime, and NaN fields in nested data structures."""
@@ -209,27 +225,30 @@ class AIService:
         elif isinstance(data, dict):
             return {key: self.convert_objectid(value) for key, value in data.items()}
         elif isinstance(data, ObjectId):
-            return str(data)  
+            return str(data)
         elif isinstance(data, datetime):
-            return data.isoformat() 
+            return data.isoformat()
         elif isinstance(data, float) and math.isnan(data):
-            return None  
+            return None
         elif isinstance(data, str) and data.lower() == "nan":
-            return None  
+            return None
         return data
 
 # --------------------------- CORE ENDPOINTS ---------------------------
+
 
 @app.get("/")
 def home():
     return {"RUNNING!"}
 
+
 @app.post("/start-chat/")
 async def chat_interaction(query: UserQuery):
-    user = users_collection.find_one({"_id": ObjectId(query.unique_id) if ObjectId.is_valid(query.unique_id) else None})
+    user = users_collection.find_one({"_id": ObjectId(
+        query.unique_id) if ObjectId.is_valid(query.unique_id) else None})
 
     if user:
-        user = {**user, "_id": str(user["_id"])} 
+        user = {**user, "_id": str(user["_id"])}
         user = User.model_validate(user)
 
     if not user:
@@ -249,8 +268,9 @@ async def chat_interaction(query: UserQuery):
     ).sort("timestamp", -1).limit(10))
 
     ai_service = AIService()
-    response = ai_service.generate_response(user.model_dump(by_alias=True), history, query.message)
-    
+    response = ai_service.generate_response(
+        user.model_dump(by_alias=True), history, query.message)
+
     chat_collection.insert_one({
         "user_id": user.id,
         "message": response,
@@ -264,6 +284,7 @@ async def chat_interaction(query: UserQuery):
         "requires_action": bool(response.get('requires_info'))
     }
 
+
 @app.post("/raise-complaint/")
 async def raise_complaint(request: ComplaintRequest):
     complaint = {
@@ -275,11 +296,12 @@ async def raise_complaint(request: ComplaintRequest):
         "created_at": datetime.now(),
         "updated_at": datetime.now()
     }
-    
+
     complaints_collection.insert_one(complaint)
     return {"complaint_id": str(complaint["_id"])}
 
 # --------------------------- ADMIN ENDPOINTS ---------------------------
+
 
 @app.post("/admin/login")
 async def admin_login(credentials: AdminLogin):
@@ -291,16 +313,19 @@ async def admin_login(credentials: AdminLogin):
         return {"access_token": token, "token_type": "bearer"}
     raise HTTPException(status_code=401, detail="Invalid credentials")
 
+
 def verify_admin(token: str = Depends(oauth2_scheme)):
     try:
         payload = jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
         if payload.get("role") == "admin":
             return payload
-        raise HTTPException(status_code=403, detail="Access forbidden: Admins only")
+        raise HTTPException(
+            status_code=403, detail="Access forbidden: Admins only")
     except jwt.ExpiredSignatureError:
         raise HTTPException(status_code=401, detail="Token expired")
     except jwt.InvalidTokenError:
         raise HTTPException(status_code=401, detail="Invalid token")
-    
+
+
 if __name__ == '__main__':
     uvicorn.run(app, port=8080, host='0.0.0.0')

@@ -14,7 +14,7 @@ const WELCOME_MESSAGES = [
   "To provide you with personalized assistance, could you please share your UniqueId number? If you prefer not to, just let me know.",
 ];
 
-const UniqueId_REQUEST_LINK = "https://resident.uidai.gov.in/en/web/resident/get-UniqueId";
+const UniqueId_REQUEST_LINK = "https://scheme-ai.vercel.app/submit-complaint";
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,7 +36,7 @@ const Chatbot = () => {
 
   const validateUniqueId = (UniqueId: string) => {
     const trimmedUniqueId = UniqueId.trim();
-    return /^\d{12}$/.test(trimmedUniqueId) ? trimmedUniqueId : null;
+    return /^[a-fA-F0-9]{24}$/.test(trimmedUniqueId) ? trimmedUniqueId : null;
   };
 
   const addUniqueIdRequestMessage = () => {
@@ -47,18 +47,18 @@ const Chatbot = () => {
   };
 
   const handleUniqueIdSubmission = (text: string) => {
-    const possibleUniqueId = text.toLowerCase().replace(/[^0-9]/g, "");
+    const possibleUniqueId = text.trim();
     const validUniqueId = validateUniqueId(possibleUniqueId);
 
     if (validUniqueId) {
       setUniqueIdId(validUniqueId);
-      addBotMessage(`Thank you! I've registered your UniqueId number ${validUniqueId.replace(/(\d{4})/g, "$1 ").trim()}. How can I assist you today?`);
+      addBotMessage(`Thank you! I've registered your UniqueId number ${validUniqueId.replace(/(\w{4})/g, "$1 ").trim()}. How can I assist you today?`);
     } else if (text.toLowerCase().includes("skip") || text.toLowerCase().includes("continue") || text.toLowerCase().includes("no")) {
       setUniqueIdId("anonymous");
       addBotMessage("No problem! I'll continue without UniqueId. How can I assist you today?");
       addUniqueIdRequestMessage();
     } else {
-      addBotMessage("I couldn't validate that UniqueId number. Please provide a valid 12-digit UniqueId number, or type 'skip' to continue without one.");
+      addBotMessage("I couldn't validate that UniqueId number. Please provide a valid 24-character UniqueId (0-9, a-f), or type 'skip' to continue without one.");
       addUniqueIdRequestMessage();
     }
   };
@@ -83,13 +83,13 @@ const Chatbot = () => {
     setIsThinking(true);
 
     try {
-      const response = await fetch(process.env.NEXT_PUBLIC_CHAT_API || "https://schemeai.onrender.com/start-chat", {
+      const response = await fetch("/api/start-chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          unique_id: UniqueIdId === "anonymous" ? "6798fcac6dc00c08c0710c8d" : UniqueIdId,
+          unique_id: UniqueIdId,
           message: userMessage,
         }),
       });

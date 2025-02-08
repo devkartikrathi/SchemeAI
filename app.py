@@ -33,6 +33,7 @@ users_collection = db["users"]
 chat_collection = db["chat_history"]
 complaints_collection = db["complaints"]
 schemes_collection = db["schemes"]
+complaints_collection = db["complaints"]
 
 app = FastAPI()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="admin/login")
@@ -117,6 +118,31 @@ class User(BaseModel):
         from_attributes = True
         populate_by_name = True
         json_encoders = {datetime: lambda dt: dt.isoformat()}
+
+class ComplaintRequest(BaseModel):
+    mobile: str
+    job: Optional[str] = None
+    address: str
+    dob: Optional[str] = None
+    age: Optional[int] = None
+    annual_income: Optional[str] = None
+    message: str
+
+class ComplaintResponse(BaseModel):
+    id: str = Field(..., alias="_id")
+    mobile: str
+    job: Optional[str] = None
+    address: str
+    dob: Optional[str] = None
+    age: Optional[int] = None
+    annual_income: Optional[str] = None
+    message: str
+    status: str
+    created_at: datetime
+    updated_at: datetime
+
+class ComplaintUpdate(BaseModel):
+    status: str
 
 # --------------------------- AI SERVICE ---------------------------
 
@@ -284,21 +310,77 @@ async def chat_interaction(query: UserQuery):
         "requires_action": bool(response.get('requires_info'))
     }
 
+<<<<<<< HEAD
 
 @app.post("/raise-complaint/")
+=======
+@app.post("/raise-complaint/", response_model=dict)
+>>>>>>> d538a43 (raise complaint routes added)
 async def raise_complaint(request: ComplaintRequest):
+    """Allows users to raise a complaint with required details."""
     complaint = {
         "_id": ObjectId(),
         "mobile": request.mobile,
+        "job": request.job,
         "address": request.address,
+        "dob": request.dob,
+        "age": request.age,
+        "annual_income": request.annual_income,
         "message": request.message,
         "status": "pending",
-        "created_at": datetime.now(),
-        "updated_at": datetime.now()
+        "created_at": datetime.utcnow(),
+        "updated_at": datetime.utcnow(),
     }
+<<<<<<< HEAD
 
     complaints_collection.insert_one(complaint)
     return {"complaint_id": str(complaint["_id"])}
+=======
+    
+    result = complaints_collection.insert_one(complaint)
+    return {"complaint_id": str(result.inserted_id), "message": "Complaint submitted successfully"}
+
+@app.get("/complaints/", response_model=List[ComplaintResponse])
+async def get_complaints():
+    """Retrieve all complaints from the database."""
+    complaints = list(complaints_collection.find({}))
+    for complaint in complaints:
+        complaint["_id"] = str(complaint["_id"])
+    return complaints
+
+@app.get("/complaint/{complaint_id}", response_model=ComplaintResponse)
+async def get_complaint(complaint_id: str):
+    """Retrieve a specific complaint by ID."""
+    complaint = complaints_collection.find_one({"_id": ObjectId(complaint_id)})
+    if not complaint:
+        raise HTTPException(status_code=404, detail="Complaint not found")
+    
+    complaint["_id"] = str(complaint["_id"])
+    return complaint
+
+@app.patch("/complaint/{complaint_id}")
+async def update_complaint_status(complaint_id: str, update: ComplaintUpdate):
+    """Update the status of a complaint."""
+    result = complaints_collection.update_one(
+        {"_id": ObjectId(complaint_id)},
+        {"$set": {"status": update.status, "updated_at": datetime.utcnow()}}
+    )
+
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Complaint not found")
+    
+    return {"message": "Complaint status updated successfully"}
+
+@app.delete("/complaint/{complaint_id}")
+async def delete_complaint(complaint_id: str):
+    """Delete a complaint."""
+    result = complaints_collection.delete_one({"_id": ObjectId(complaint_id)})
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Complaint not found")
+    
+    return {"message": "Complaint deleted successfully"}
+>>>>>>> d538a43 (raise complaint routes added)
 
 # --------------------------- ADMIN ENDPOINTS ---------------------------
 

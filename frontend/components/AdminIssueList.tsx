@@ -117,7 +117,11 @@ const AdminIssueList = () => {
           </thead>
           <tbody className="divide-y divide-gray-200">
             {isLoading ? (
-              <Spinner />
+              <tr>
+                <td colSpan={5} className="text-center">
+                  <Spinner />
+                </td>
+              </tr>
             ) : (
               <AnimatePresence>
                 {filteredIssues.map((issue) => (

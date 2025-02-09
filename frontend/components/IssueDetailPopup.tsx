@@ -79,9 +79,9 @@ const IssueDetailPopup: React.FC<IssueDetailPopupProps> = ({ issue, onClose, onS
                     <div>
                         <p className="text-sm font-medium text-gray-500">Current Status</p>
                         <p
-                            className={`text-lg font-semibold ${issue.status === "Pending"
+                            className={`text-lg font-semibold ${issue.status === "pending"
                                 ? "text-yellow-600"
-                                : issue.status === "Resolved"
+                                : issue.status === "resolved"
                                     ? "text-green-600"
                                     : "text-red-600"
                                 }`}
@@ -92,19 +92,19 @@ const IssueDetailPopup: React.FC<IssueDetailPopupProps> = ({ issue, onClose, onS
                     <div className="space-x-2">
                         <button
                             className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
-                            onClick={() => onStatusChange(issue._id, "Resolved")}
+                            onClick={() => onStatusChange(issue._id, "resolved")}
                         >
                             Resolve
                         </button>
                         <button
                             className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
-                            onClick={() => onStatusChange(issue._id, "Rejected")}
+                            onClick={() => onStatusChange(issue._id, "rejected")}
                         >
                             Reject
                         </button>
                         <button
                             className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition-colors"
-                            onClick={() => onStatusChange(issue._id, "Pending")}
+                            onClick={() => onStatusChange(issue._id, "pending")}
                         >
                             Mark as Pending
                         </button>

@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
 import IssueDetailPopup from "@/components/IssueDetailPopup";
 import Spinner from "@/components/Spinner";
-import { Loader } from "lucide-react";
 
 const AdminIssueList = () => {
   type Issue = {

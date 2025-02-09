@@ -1,103 +1,71 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { format } from "date-fns"
-import IssueDetailPopup from "@/components/IssueDetailPopup"
-
-// Dummy data based on the provided schema
-const dummyIssues = [
-  {
-    id: 1,
-    mobile: "9876543210",
-    job: "Software Engineer",
-    address: "123 Tech Park, Bangalore",
-    dob: "1990-05-15",
-    age: "33",
-    income: "10+",
-    message: "Need information about skill development programs",
-    created_at: "2023-07-01T10:30:00Z",
-    status: "Pending",
-  },
-  {
-    id: 2,
-    mobile: "8765432109",
-    job: "Teacher",
-    address: "456 Education Street, Mumbai",
-    dob: "1985-11-20",
-    age: "37",
-    income: "5-10",
-    message: "Inquiry about education loan forgiveness",
-    created_at: "2023-07-02T14:45:00Z",
-    status: "Pending",
-  },
-  {
-    id: 3,
-    mobile: "7654321098",
-    job: "Farmer",
-    address: "789 Rural Road, Punjab",
-    dob: "1975-03-10",
-    age: "48",
-    income: "1-2.5",
-    message: "Request for information on crop insurance schemes",
-    created_at: "2023-07-03T09:15:00Z",
-    status: "Resolved",
-  },
-  {
-    id: 4,
-    mobile: "6543210987",
-    job: "Small Business Owner",
-    address: "321 Market Lane, Gujarat",
-    dob: "1980-08-25",
-    age: "42",
-    income: "2.5-5",
-    message: "Seeking details about MSME support programs",
-    created_at: "2023-07-04T16:20:00Z",
-    status: "Rejected",
-  },
-  {
-    id: 5,
-    mobile: "5432109876",
-    job: "Retired Government Employee",
-    address: "654 Pension Colony, Delhi",
-    dob: "1960-12-05",
-    age: "62",
-    income: "2.5-5",
-    message: "Query regarding senior citizen benefits",
-    created_at: "2023-07-05T11:00:00Z",
-    status: "Pending",
-  },
-]
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { format } from "date-fns";
+import IssueDetailPopup from "@/components/IssueDetailPopup";
 
 const AdminIssueList = () => {
-  type Issue = typeof dummyIssues[number];
-  const [issues, setIssues] = useState(dummyIssues)
-  const [filter, setFilter] = useState("All")
-  const [searchTerm, setSearchTerm] = useState("")
+  type Issue = {
+    _id: string;
+    mobile: string;
+    job: string;
+    address: string;
+    dob: string;
+    age: string;
+    annual_income: string;
+    message: string;
+    created_at: string;
+    status: string;
+  };
+
+  const [issues, setIssues] = useState<Issue[]>([]);
+  const [filter, setFilter] = useState("All");
+  const [searchTerm, setSearchTerm] = useState("");
   const [selectedIssue, setSelectedIssue] = useState<Issue | null>(null);
-  const [isPopupOpen, setIsPopupOpen] = useState(false)
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
-  const filteredIssues = issues.filter((issue) => {
-    const matchesFilter = filter === "All" || issue.status === filter
-    const matchesSearch =
-      issue.mobile.includes(searchTerm) ||
-      issue.job.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      issue.message.toLowerCase().includes(searchTerm.toLowerCase())
-    return matchesFilter && matchesSearch
-  })
+  useEffect(() => {
+    fetchComplaints();
+  }, []);
 
-  const handleIssueClick = (issue: typeof dummyIssues[number]) => {
+  const fetchComplaints = async () => {
+    try {
+      const response = await fetch("/api/complaints/");
+      const data = await response.json();
+      setIssues(data);
+    } catch (error) {
+      console.error("Error fetching complaints:", error);
+    }
+  };
+
+  const handleIssueClick = (issue: Issue) => {
     setSelectedIssue(issue);
     setIsPopupOpen(true);
   };
 
-  const handleStatusChange = (id: number, newStatus: string) => {
-    setIssues(issues.map((issue) =>
-      issue.id === id ? { ...issue, status: newStatus } : issue
-    ));
+  const handleStatusChange = async (id: string, newStatus: string) => {
+    try {
+      await fetch(`/api/complaint/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: newStatus }),
+      });
+      fetchComplaints();
+    } catch (error) {
+      console.error("Error updating status:", error);
+    }
     setIsPopupOpen(false);
   };
 
+  const filteredIssues = issues.filter((issue) => {
+    const matchesFilter = filter === "All" || issue.status === filter;
+    const matchesSearch =
+      issue.mobile.includes(searchTerm) ||
+      issue.job.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      issue.message.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesFilter && matchesSearch;
+  });
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -114,9 +82,9 @@ const AdminIssueList = () => {
             onChange={(e) => setFilter(e.target.value)}
           >
             <option value="All">All</option>
-            <option value="Pending">Pending</option>
-            <option value="Resolved">Resolved</option>
-            <option value="Rejected">Rejected</option>
+            <option value="pending">Pending</option>
+            <option value="resolved">Resolved</option>
+            <option value="rejected">Rejected</option>
           </select>
         </div>
         <div>
@@ -146,7 +114,7 @@ const AdminIssueList = () => {
             <AnimatePresence>
               {filteredIssues.map((issue) => (
                 <motion.tr
-                  key={issue.id}
+                  key={issue._id}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
@@ -160,9 +128,9 @@ const AdminIssueList = () => {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span
                       className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                      ${issue.status === "Pending"
+                      ${issue.status === "pending"
                           ? "bg-yellow-100 text-yellow-800"
-                          : issue.status === "Resolved"
+                          : issue.status === "resolved"
                             ? "bg-green-100 text-green-800"
                             : "bg-red-100 text-red-800"
                         }`}
@@ -186,10 +154,8 @@ const AdminIssueList = () => {
           onStatusChange={handleStatusChange}
         />
       )}
-
     </div>
-  )
-}
+  );
+};
 
-export default AdminIssueList
-
+export default AdminIssueList;

@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: "https://schemeai.onrender.com/:path*/",
+        destination: "https://schemeai.onrender.com/:path*",
       },
     ];
   },

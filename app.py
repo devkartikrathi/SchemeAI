@@ -18,15 +18,14 @@ import uvicorn
 from typing import List, Optional
 
 # Configuration
+
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
 JWT_SECRET = os.getenv("JWT_SECRET", "admin_secret_123")
 SCHEMES_FILE = "government-schemes.json"
 
-# Initialize Gemini API
 genai.configure(api_key=GEMINI_API_KEY)
 
-# MongoDB Setup
 client = MongoClient(MONGO_URI)
 db = client["government_portal"]
 users_collection = db["users"]
@@ -41,6 +40,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="admin/login")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["https://scheme-ai.vercel.app"],
+    allow_origins=["https://scheme-ai.vercel.app"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

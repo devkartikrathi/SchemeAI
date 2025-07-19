@@ -16,6 +16,9 @@ import re
 import math
 import uvicorn
 from typing import List, Optional
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Configuration
 
@@ -39,8 +42,8 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="admin/login")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://scheme-ai.vercel.app"],
-    allow_origins=["https://scheme-ai.vercel.app"], 
+    allow_origins=["https://scheme-bot.kartik-rathi.site/"],
+    # allow_origins=["*"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -403,4 +406,4 @@ def verify_admin(token: str = Depends(oauth2_scheme)):
 
 
 if __name__ == '__main__':
-    uvicorn.run(app, port=8080, host='0.0.0.0')
+    uvicorn.run(app, port=8000, host='0.0.0.0')

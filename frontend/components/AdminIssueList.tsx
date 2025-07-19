@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
 import IssueDetailPopup from "@/components/IssueDetailPopup";
+import Spinner from "@/components/Spinner";
 
 const AdminIssueList = () => {
   type Issue = {
@@ -24,6 +25,7 @@ const AdminIssueList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedIssue, setSelectedIssue] = useState<Issue | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetchComplaints();
@@ -31,11 +33,14 @@ const AdminIssueList = () => {
 
   const fetchComplaints = async () => {
     try {
+      setIsLoading(true);
       const response = await fetch("/api/complaints/");
       const data = await response.json();
       setIssues(data);
     } catch (error) {
       console.error("Error fetching complaints:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -111,39 +116,47 @@ const AdminIssueList = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            <AnimatePresence>
-              {filteredIssues.map((issue) => (
-                <motion.tr
-                  key={issue._id}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="hover:bg-gray-50 cursor-pointer"
-                  onClick={() => handleIssueClick(issue)}
-                >
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {format(new Date(issue.created_at), "dd MMM yyyy")}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span
-                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+            {isLoading ? (
+              <tr>
+                <td colSpan={5} className="text-center">
+                  <Spinner />
+                </td>
+              </tr>
+            ) : (
+              <AnimatePresence>
+                {filteredIssues.map((issue) => (
+                  <motion.tr
+                    key={issue._id}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="hover:bg-gray-50 cursor-pointer"
+                    onClick={() => handleIssueClick(issue)}
+                  >
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {format(new Date(issue.created_at), "dd MMM yyyy")}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span
+                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
                       ${issue.status === "pending"
-                          ? "bg-yellow-100 text-yellow-800"
-                          : issue.status === "resolved"
-                            ? "bg-green-100 text-green-800"
-                            : "bg-red-100 text-red-800"
-                        }`}
-                    >
-                      {issue.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{issue.mobile}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{issue.job}</td>
-                  <td className="px-6 py-4 text-sm text-gray-500 truncate max-w-xs">{issue.message}</td>
-                </motion.tr>
-              ))}
-            </AnimatePresence>
+                            ? "bg-yellow-100 text-yellow-800"
+                            : issue.status === "resolved"
+                              ? "bg-green-100 text-green-800"
+                              : "bg-red-100 text-red-800"
+                          }`}
+                      >
+                        {issue.status}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{issue.mobile}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{issue.job}</td>
+                    <td className="px-6 py-4 text-sm text-gray-500 truncate max-w-xs">{issue.message}</td>
+                  </motion.tr>
+                ))}
+              </AnimatePresence>
+            )}
           </tbody>
         </table>
       </div>

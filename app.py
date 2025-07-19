@@ -42,8 +42,8 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="admin/login")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://scheme-bot.kartik-rathi.site/"],
-    # allow_origins=["*"], 
+    # allow_origins=["https://scheme-bot.kartik-rathi.site/"],
+    allow_origins=["*"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
